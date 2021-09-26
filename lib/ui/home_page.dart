@@ -3,7 +3,13 @@ import 'package:book_tickets_ui/ui/my_tickets.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  final whereFrom;
+  final toWhere;
+  MyHomePage({
+    Key? key,
+    String? this.whereFrom,
+    String? this.toWhere,
+  }) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -17,7 +23,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List pages = [
-      BookTickets(),
+      BookTickets(
+        whereFrom: widget.whereFrom == null ? null : widget.whereFrom,
+        toWhere: widget.toWhere == null ? null : widget.toWhere,
+      ),
       MyTickets(),
       BookTickets(),
     ];

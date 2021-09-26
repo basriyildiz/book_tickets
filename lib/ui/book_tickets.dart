@@ -1,10 +1,20 @@
+import 'package:book_tickets_ui/helper/bus_tours.dart';
 import 'package:book_tickets_ui/helper/text.dart';
-import 'package:book_tickets_ui/ui/chooseCity.dart';
+import 'package:book_tickets_ui/ui/choose_city.dart';
+import 'package:book_tickets_ui/ui/select_ticket..dart';
 import 'package:flutter/material.dart';
 import 'package:book_tickets_ui/helper/content_extension.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BookTickets extends StatefulWidget {
-  const BookTickets({Key? key}) : super(key: key);
+  final whereFrom;
+  final toWhere;
+
+  const BookTickets({
+    Key? key,
+    String? this.whereFrom,
+    String? this.toWhere,
+  }) : super(key: key);
 
   @override
   _BookTicketsState createState() => _BookTicketsState();
@@ -13,8 +23,56 @@ class BookTickets extends StatefulWidget {
 class _BookTicketsState extends State<BookTickets> {
   int selectedVehicle = 1;
   int todayOrTomorrow = 0;
+  String? whereFromComed;
+  String? toWhereComed;
+
+  bool isDataClear = false;
+  DateTime? selectedDate;
+  String? showDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        showDate = selectedDate!.day.toString() +
+            "/" +
+            selectedDate!.month.toString() +
+            "/" +
+            selectedDate!.year.toString();
+      });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(milliseconds: 1)).then((value) => setState(() {
+          _dataRead();
+          _dataReadToWhere();
+          _dataReadDate();
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.whereFrom != null && isDataClear == false) {
+      whereFromComed = widget.whereFrom;
+      _dataSave(whereFromComed!, 1);
+
+      debugPrint("çalıştı");
+    }
+    if (widget.toWhere != null && isDataClear == false) {
+      toWhereComed = widget.toWhere;
+      _dataSave(toWhereComed!, 2);
+
+      debugPrint("çalıştı 2");
+    }
+
     return Column(
       children: [
         Container(
@@ -43,14 +101,61 @@ class _BookTicketsState extends State<BookTickets> {
         SizedBox(
           height: context.dynamicHeight(.02),
         ),
-        Container(
-          width: context.dynamicWidth(.7),
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.greenAccent.shade400,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(.05)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                flex: 12,
+                child: Container(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.greenAccent.shade400,
+                      ),
+                      onPressed: () {
+                        if (whereFromComed != null &&
+                            toWhereComed != null &&
+                            showDate != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SelectTicket(
+                                  toWhere: toWhereComed,
+                                  whereFrom: whereFromComed,
+                                  date: showDate,
+                                ),
+                              ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Please complete form")));
+                        }
+                      },
+                      child: Text("Find your Bus Ticket")),
+                ),
               ),
-              onPressed: () {},
-              child: Text("Find your Bus Ticket")),
+              Expanded(flex: 1, child: SizedBox()),
+              Expanded(
+                flex: 4,
+                child: Container(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _dataClear();
+                          toWhereComed = null;
+                          whereFromComed = null;
+                          isDataClear = true;
+                          showDate = null;
+                        });
+                      },
+                      child: Icon(Icons.delete)),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -128,38 +233,8 @@ class _BookTicketsState extends State<BookTickets> {
                       child: Column(
                         children: [
                           Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChooseCity(text: "Where From"),
-                                    ));
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "WHERE FROM",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 5),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "Select city or county",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            child: formButton("WHERE FROM",
+                                "Select city or county", whereFromComed, 1),
                           ),
                           Container(
                             width: double.infinity,
@@ -167,38 +242,11 @@ class _BookTicketsState extends State<BookTickets> {
                             color: Colors.grey.shade200,
                           ),
                           Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "TO WHERE",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "Select city or county",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            child: formButton("TO WHERE",
+                                "Select city or county", toWhereComed, 2),
                           ),
                         ],
                       )),
-                  Expanded(
-                      flex: 5,
-                      child: Icon(
-                        Icons.change_circle_outlined,
-                        size: context.dynamicHeight(0.04),
-                        color: Colors.grey.shade700,
-                      ))
                 ],
               ),
             ),
@@ -231,31 +279,45 @@ class _BookTicketsState extends State<BookTickets> {
                       )),
                   Expanded(child: SizedBox()),
                   Expanded(
-                    flex: 25,
+                    flex: 20,
                     child: Column(
                       children: [
                         Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "WHERE FROM",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                          child: InkWell(
+                            onTap: () {
+                              _selectDate(context)
+                                  .then((value) => _dataDateSave());
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Date",
+                                    style: showDate == null
+                                        ? TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          )
+                                        : TextStyle(color: Colors.grey),
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: 5),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Select city or county",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                            ],
+                                SizedBox(height: 5),
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                        showDate == null
+                                            ? "Choose Date"
+                                            : showDate.toString(),
+                                        style: showDate == null
+                                            ? TextStyle(color: Colors.grey)
+                                            : TextStyle(
+                                                color: Colors.grey.shade900,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: context
+                                                    .dynamicHeight(.03)))),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -268,34 +330,51 @@ class _BookTicketsState extends State<BookTickets> {
         ],
       );
 
+  InkWell formButton(String header, String body, afterComeData, int formNo) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChooseCity(
+                text: header,
+                whichFrom: formNo,
+              ),
+            ));
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              header,
+              style: afterComeData == null
+                  ? TextStyle(
+                      fontWeight: FontWeight.bold,
+                    )
+                  : TextStyle(color: Colors.grey),
+            ),
+          ),
+          SizedBox(height: 5),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(afterComeData == null ? body : afterComeData,
+                style: afterComeData == null
+                    ? TextStyle(color: Colors.grey)
+                    : TextStyle(
+                        color: Colors.grey.shade900,
+                        fontWeight: FontWeight.bold,
+                        fontSize: context.dynamicHeight(.03))),
+          ),
+        ],
+      ),
+    );
+  }
+
   Icon iconsDot() {
     return Icon(Icons.circle,
         size: context.dynamicHeight(.007), color: Colors.grey.shade400);
-  }
-
-  Container todayOrTommorrowButton(String text, int index) {
-    int sayi = 0;
-    if (index == 1) {
-      sayi = 2;
-    } else if (index == 2) {
-      sayi = 1;
-    }
-    return Container(
-      width: context.dynamicWidth(.18),
-      height: context.dynamicHeight(.04),
-      decoration: BoxDecoration(
-        color: todayOrTomorrow == 0 || todayOrTomorrow == sayi
-            ? Colors.transparent
-            : Colors.red,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-            color: todayOrTomorrow == 0 || todayOrTomorrow == sayi
-                ? Colors.black
-                : Colors.red,
-            width: 1.5),
-      ),
-      child: Center(child: Text(text)),
-    );
   }
 
   Column flightForm() => Column(
@@ -431,5 +510,43 @@ class _BookTicketsState extends State<BookTickets> {
         ),
       ),
     );
+  }
+
+  _dataSave(String data, int whichForm) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (whichForm == 1) {
+      await prefs.setString("WhereFrom", data);
+    } else if (whichForm == 2) {
+      await prefs.setString("ToWhere", data);
+    } else {}
+  }
+
+  _dataRead() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    whereFromComed = prefs.getString("WhereFrom");
+    debugPrint("data read");
+  }
+
+  _dataReadToWhere() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    toWhereComed = prefs.getString("ToWhere");
+    debugPrint("data read to where");
+  }
+
+  _dataReadDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    showDate = prefs.getString("Date");
+    debugPrint("data read datee");
+  }
+
+  _dataClear() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
+  _dataDateSave() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("Date", showDate!);
   }
 }
