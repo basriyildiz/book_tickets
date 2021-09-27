@@ -5,10 +5,21 @@ import 'package:flutter/material.dart';
 class MyHomePage extends StatefulWidget {
   final whereFrom;
   final toWhere;
+  String? showDate;
+  String? whereFrom1;
+  String? toWhere1;
+  String? price;
+  String? time;
+
   MyHomePage({
     Key? key,
     String? this.whereFrom,
     String? this.toWhere,
+    String? this.whereFrom1,
+    String? this.toWhere1,
+    String? this.showDate,
+    String? this.time,
+    String? this.price,
   }) : super(key: key);
 
   @override
@@ -19,15 +30,35 @@ class _MyHomePageState extends State<MyHomePage> {
   int selectedVehicle = 1;
   int todayOrTomorrow = 0;
   int selectedItem = 0;
+  bool isSelected = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    if (widget.toWhere1 != null && isSelected == false) {
+      setState(() {
+        selectedItem = 1;
+        isSelected = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("check : " + widget.toWhere1.toString());
     List pages = [
       BookTickets(
         whereFrom: widget.whereFrom == null ? null : widget.whereFrom,
         toWhere: widget.toWhere == null ? null : widget.toWhere,
       ),
-      MyTickets(),
+      isSelected
+          ? MyTickets(
+              whereFrom: widget.whereFrom1,
+              toWhere: widget.toWhere1,
+              showDate: widget.showDate,
+              time: widget.time,
+              price: widget.price,
+            )
+          : MyTickets(),
       BookTickets(),
     ];
     return Scaffold(
@@ -71,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onItemTapped(index) {
     setState(() {
       selectedItem = index;
+      isSelected = false;
     });
   }
 

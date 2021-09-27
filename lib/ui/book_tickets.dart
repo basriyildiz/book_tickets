@@ -125,7 +125,7 @@ class _BookTicketsState extends State<BookTickets> {
                                   whereFrom: whereFromComed,
                                   date: showDate,
                                 ),
-                              ));
+                              ),);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text("Please complete form")));

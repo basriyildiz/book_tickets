@@ -1,7 +1,7 @@
 import 'package:book_tickets_ui/helper/city_list.dart';
 import 'package:flutter/material.dart';
 
-List tour0_1Time = [
+List<String> tour0_1Time = [
   "09:30",
   "10:35",
   "11:00",
@@ -13,7 +13,7 @@ List tour0_1Time = [
   "20:30",
   "23:45",
 ];
-List tour0_2Time = [
+List<String> tour0_2Time = [
   "09:45",
   "10:30",
   "11:20",
@@ -25,29 +25,29 @@ List tour0_2Time = [
   "20:30",
   "23:45",
 ];
-List tour0_1Price = [
-  190,
-  185,
-  205,
-  305,
-  160,
-  200,
-  210,
-  250,
-  185,
-  190,
+List<String> tour0_1Price = [
+  "190",
+  "185",
+  "205",
+  "305",
+  "160",
+  "200",
+  "210",
+  "250",
+  "185",
+  "190",
 ];
-List tour0_2Price = [
-  200,
-  190,
-  205,
-  185,
-  190,
-  160,
-  250,
-  185,
-  305,
-  210,
+List<String> tour0_2Price = [
+  "200",
+  "190",
+  "205",
+  "185",
+  "190",
+  "160",
+  "250",
+  "185",
+  "305",
+  "210",
 ];
 
 tourFinder(String whereFrom, String toWhere, time, price) {
