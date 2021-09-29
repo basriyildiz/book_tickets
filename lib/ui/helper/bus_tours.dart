@@ -1,4 +1,4 @@
-import 'package:book_tickets_ui/helper/city_list.dart';
+import 'package:book_tickets_ui/ui/helper/city_list.dart';
 import 'package:flutter/material.dart';
 
 List<String> tour0_1Time = [

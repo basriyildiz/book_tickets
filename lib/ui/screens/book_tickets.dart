@@ -1,9 +1,9 @@
-import 'package:book_tickets_ui/helper/bus_tours.dart';
-import 'package:book_tickets_ui/helper/text.dart';
-import 'package:book_tickets_ui/ui/choose_city.dart';
-import 'package:book_tickets_ui/ui/select_ticket..dart';
+import 'package:book_tickets_ui/ui/helper/bus_tours.dart';
+import 'package:book_tickets_ui/ui/helper/text.dart';
+import 'package:book_tickets_ui/ui/screens/choose_city.dart';
+import 'package:book_tickets_ui/ui/screens/select_ticket..dart';
 import 'package:flutter/material.dart';
-import 'package:book_tickets_ui/helper/content_extension.dart';
+import 'package:book_tickets_ui/ui/helper/content_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookTickets extends StatefulWidget {

@@ -1,5 +1,6 @@
-import 'package:book_tickets_ui/ui/book_tickets.dart';
-import 'package:book_tickets_ui/ui/my_tickets.dart';
+import 'package:book_tickets_ui/ui/screens/book_tickets.dart';
+import 'package:book_tickets_ui/ui/screens/my_tickets.dart';
+import 'package:book_tickets_ui/ui/screens/settings.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,11 +16,11 @@ class MyHomePage extends StatefulWidget {
     Key? key,
     String? this.whereFrom,
     String? this.toWhere,
-    String? this.whereFrom1,
-    String? this.toWhere1,
-    String? this.showDate,
-    String? this.time,
-    String? this.price,
+    this.whereFrom1,
+    this.toWhere1,
+    this.showDate,
+    this.time,
+    this.price,
   }) : super(key: key);
 
   @override
@@ -59,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
               price: widget.price,
             )
           : MyTickets(),
-      BookTickets(),
+      SettingsPage(),
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
@@ -112,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (selectedItem == 1) {
       return "My Tickets";
     } else {
-      return "error: app bar title";
+      return "Settings";
     }
   }
 }

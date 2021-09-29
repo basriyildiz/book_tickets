@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:book_tickets_ui/helper/content_extension.dart';
+import 'package:book_tickets_ui/ui/helper/content_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyTickets extends StatefulWidget {

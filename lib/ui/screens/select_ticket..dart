@@ -1,8 +1,8 @@
-import 'package:book_tickets_ui/helper/bus_tours.dart';
-import 'package:book_tickets_ui/helper/city_list.dart';
-import 'package:book_tickets_ui/ui/my_tickets.dart';
+import 'package:book_tickets_ui/ui/helper/bus_tours.dart';
+import 'package:book_tickets_ui/ui/helper/city_list.dart';
+import 'package:book_tickets_ui/ui/screens/my_tickets.dart';
 import 'package:flutter/material.dart';
-import 'package:book_tickets_ui/helper/content_extension.dart';
+import 'package:book_tickets_ui/ui/helper/content_extension.dart';
 
 import 'home_page.dart';
 

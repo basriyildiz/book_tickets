@@ -1,8 +1,9 @@
+import 'package:book_tickets_ui/ui/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'ui/home_page.dart';
-import 'ui/my_tickets.dart';
+import 'ui/screens/home_page.dart';
+import 'ui/screens/my_tickets.dart';
 
 void main() {
   runApp(MyApp());
