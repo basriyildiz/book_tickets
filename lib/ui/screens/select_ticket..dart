@@ -36,7 +36,7 @@ class _SelectTicketState extends State<SelectTicket> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
         elevation: 0,
         title: Text(
@@ -217,7 +217,7 @@ class _SelectTicketState extends State<SelectTicket> {
                       width: context.dynamicWidth(.1),
                       height: context.dynamicHeight(.1),
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(5),
                         boxShadow: [
                           BoxShadow(

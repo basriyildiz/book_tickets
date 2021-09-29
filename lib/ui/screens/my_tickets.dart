@@ -28,6 +28,7 @@ class _MyTicketsState extends State<MyTickets> {
   List<String> ticketShowDate = [];
   List<String> ticketTime = [];
   List<String> ticketPrice = [];
+  bool isDarkTheme = false;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _MyTicketsState extends State<MyTickets> {
         }
       });
     });
+    _getDarkTheme();
     _dataRead();
   }
 
@@ -54,11 +56,13 @@ class _MyTicketsState extends State<MyTickets> {
             padding: const EdgeInsets.all(10.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: isDarkTheme ? Colors.grey.shade900 : Colors.white,
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(.3),
+                    color: isDarkTheme
+                        ? Colors.grey.shade100.withOpacity(.001)
+                        : Colors.grey.withOpacity(.3),
                     blurRadius: 5,
                     spreadRadius: 1,
                     offset: Offset(0, 2),
@@ -178,7 +182,9 @@ class _MyTicketsState extends State<MyTickets> {
                       borderRadius: BorderRadius.circular(5),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(.3),
+                          color: isDarkTheme
+                              ? Colors.transparent
+                              : Colors.grey.withOpacity(.3),
                           blurRadius: 5,
                           spreadRadius: 1,
                           offset: Offset(0, 2),
@@ -232,5 +238,14 @@ class _MyTicketsState extends State<MyTickets> {
   _dataClear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
+  }
+
+  void _getDarkTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool("isDark") != null) {
+      setState(() {
+        isDarkTheme = prefs.getBool("isDark")!;
+      });
+    }
   }
 }

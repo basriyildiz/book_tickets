@@ -140,7 +140,7 @@ class _BookTicketsState extends State<BookTickets> {
                 child: Container(
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
+                        primary: Theme.of(context).primaryColor,
                       ),
                       onPressed: () {
                         setState(() {
@@ -423,7 +423,7 @@ class _BookTicketsState extends State<BookTickets> {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: selectedVehicle == selected ? Colors.red : Colors.white,
+            color: selectedVehicle == selected ? Theme.of(context).primaryColor : Colors.white,
             borderRadius: BorderRadius.circular(5),
           ),
           margin: EdgeInsets.all(3),
@@ -460,7 +460,7 @@ class _BookTicketsState extends State<BookTickets> {
     return Container(
       width: double.infinity,
       height: context.dynamicHeight(.2),
-      color: Colors.red,
+      color: Theme.of(context).primaryColor,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.dynamicHeight(.04)),
         child: Column(

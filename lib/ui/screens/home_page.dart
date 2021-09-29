@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: selectedItem,
         onTap: _onItemTapped,
-        selectedItemColor: Colors.red,
+        selectedItemColor: Theme.of(context).primaryColor,
       ),
       appBar: appBar(),
       body: pages[selectedItem],
@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   AppBar appBar() {
     return AppBar(
-      backgroundColor: Colors.red,
+      backgroundColor: Theme.of(context).primaryColor,
       centerTitle: true,
       elevation: 0,
       title: Text(
