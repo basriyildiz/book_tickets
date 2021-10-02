@@ -1,7 +1,5 @@
 import 'package:book_tickets_ui/ui/helper/theme_color_list.dart';
-import 'package:book_tickets_ui/ui/screens/login.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ui/screens/home_page.dart';

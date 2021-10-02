@@ -258,7 +258,7 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Center(child: Text("Tema Rengi Seçiniz")),
+          title: Center(child: Text("Choose theme color")),
           contentPadding: EdgeInsets.all(0),
           scrollable: true,
           content: Column(
